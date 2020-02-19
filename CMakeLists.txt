@@ -5,7 +5,13 @@ include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-if(NOT WIN32)
+if (APPLE)
+    set(CMAKE_MACOSX_RPATH 1)
+    cmake_policy(SET CMP0040 OLD)
+    cmake_policy(SET CMP0068 NEW)
+endif()
+
+if(NOT WIN32 AND NOT APPLE)
 	set(CMAKE_INSTALL_PREFIX "") # Skip all *nix-style installing for a while. Use DESTDIR
     IF(EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake")
         set(CPACK_PACKAGE_NAME "openxray")
@@ -101,7 +107,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     endif()
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++17 -Wno-attributes -Wl,--no-undefined -fvisibility=hidden")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++17 -Wno-attributes -Wl,--no-undefined -fvisibility=hidden -stdlib=libc++")
 
 #set (SANITIZE_FLAGS "-fsanitize=address  -fsanitize=leak -fno-omit-frame-pointer -g -fsanitize=undefined -fno-sanitize=vptr")
 #if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -121,8 +127,10 @@ endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpmath=sse -msse3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse -msse3")
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=gold")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=gold")
+if(NOT APPLE)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=gold")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=gold")
+endif()
 
 if( TBB_PARALLEL )
   add_definitions ( -DUSE_TBB_PARALLEL )

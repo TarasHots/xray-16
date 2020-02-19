@@ -6,6 +6,8 @@
 #define FREEBSD
 #elif defined(_WIN32)
 #define WINDOWS
+#elif defined(__APPLE__) && defined(__MACH__)
+#define APPLE
 #else
 #error Unsupported platform
 #endif
@@ -26,4 +28,6 @@
 #include "Common/PlatformBSD.inl"
 #elif defined(WINDOWS)
 #include "Common/PlatformWindows.inl"
+#elif defined(APPLE)
+#include "Common/PlatformApple.inl"
 #endif

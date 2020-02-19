@@ -57,7 +57,7 @@ constexpr double dbl_min = type_min<double>;
 constexpr double dbl_zero = type_zero<double>;
 constexpr double dbl_eps = type_epsilon<double>;
 
-#if defined(LINUX) || defined(FREEBSD)
+#if defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 constexpr size_t max_path = PATH_MAX;
 #elif defined(WINDOWS)
 constexpr size_t max_path = MAX_PATH;
@@ -81,6 +81,7 @@ using string_path = char[2 * max_path];
 #if defined(WINDOWS)
 #define xr_pure_interface __interface
 #elif defined(LINUX)
+#elif defined(APPLE)
 #define xr_pure_interface struct
 #endif
 #endif

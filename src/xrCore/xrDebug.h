@@ -3,9 +3,10 @@
 #include "xrCommon/xr_string.h"
 #include "xrCommon/xr_vector.h"
 #include "Threading/Lock.hpp"
+#include "../../../../../../usr/local/include/FreeImage.h"
 
 #include <string>
-#if defined(LINUX)
+#if defined(LINUX) || defined(APPLE)
 #include <cstdio>
 #elif defined(WINDOWS)
 #pragma warning(push)
