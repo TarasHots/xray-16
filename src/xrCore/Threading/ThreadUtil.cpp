@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ThreadUtil.h"
-#if defined(LINUX) || defined(FREEBSD)
+#if defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 #include <pthread.h>
 #endif
 
@@ -85,7 +85,7 @@ void CloseThreadHandle(ThreadHandle& threadHandle)
         threadHandle = nullptr;
     }
 }
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 ThreadId GetCurrThreadId() { return pthread_self(); }
 
 ThreadHandle GetCurrentThreadHandle() { return pthread_self(); }

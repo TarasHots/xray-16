@@ -3,7 +3,7 @@
 #include "PPMd.h"
 #include "SDL.h"
 
-#if defined(LINUX) || defined(FREEBSD)
+#if defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 
 
 LONG InterlockedExchange(LONG volatile *dest, LONG val)

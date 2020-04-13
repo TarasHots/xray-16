@@ -107,7 +107,13 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     endif()
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++17 -Wno-attributes -Wl,--no-undefined -fvisibility=hidden -stdlib=libc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++17 -Wno-attributes -fvisibility=hidden -stdlib=libc++")
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-undefined,error")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--no-undefined")
+endif()
 
 #set (SANITIZE_FLAGS "-fsanitize=address  -fsanitize=leak -fno-omit-frame-pointer -g -fsanitize=undefined -fno-sanitize=vptr")
 #if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -176,6 +182,10 @@ find_package(JPEG REQUIRED)
 find_package(TBB REQUIRED)
 find_package(PCRE REQUIRED)
 endif()
+
+#if (APPLE)
+#    find_library(IOKit IOKit)
+#endif()
 
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/Common )

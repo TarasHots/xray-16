@@ -15,11 +15,11 @@
 //?
 #endif
 
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 #include <x86intrin.h> // __rdtsc
 #ifdef LINUX
 #include <fpu_control.h>
-#elif defined(FREEBSD)
+#elif defined(FREEBSD) || defined(APPLE)
 #include <sys/sysctl.h>
 #include <fenv.h>
 typedef unsigned int fpu_control_t __attribute__((__mode__(__HI__)));
@@ -60,7 +60,7 @@ XRCORE_API Fmatrix Fidentity;
 XRCORE_API Dmatrix Didentity;
 XRCORE_API CRandom Random;
 
-#if defined(LINUX) || defined(FREEBSD)
+#if defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 DWORD timeGetTime()
 {
     return SDL_GetTicks();
@@ -84,7 +84,7 @@ XRCORE_API void m24()
     _controlfp(_PC_24, MCW_PC);
 #endif
     _controlfp(_RC_CHOP, MCW_RC);
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD)  || defined(APPLE)
     fpu_control_t fpu_cw;
     _FPU_GETCW(fpu_cw);
     fpu_cw = (fpu_cw & ~_FPU_EXTENDED & ~_FPU_DOUBLE) | _FPU_SINGLE;
@@ -99,7 +99,7 @@ XRCORE_API void m24r()
     _controlfp(_PC_24, MCW_PC);
 #endif
     _controlfp(_RC_NEAR, MCW_RC);
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
     fpu_control_t fpu_cw;
     _FPU_GETCW(fpu_cw);
     fpu_cw = (fpu_cw & ~_FPU_EXTENDED & ~_FPU_DOUBLE) | _FPU_SINGLE | _FPU_RC_NEAREST;
@@ -114,7 +114,7 @@ XRCORE_API void m53()
     _controlfp(_PC_53, MCW_PC);
 #endif
     _controlfp(_RC_CHOP, MCW_RC);
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
     fpu_control_t fpu_cw;
     _FPU_GETCW(fpu_cw);
     fpu_cw = (fpu_cw & ~_FPU_EXTENDED & ~_FPU_SINGLE) | _FPU_DOUBLE;
@@ -129,7 +129,7 @@ XRCORE_API void m53r()
     _controlfp(_PC_53, MCW_PC);
 #endif
     _controlfp(_RC_NEAR, MCW_RC);
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
     fpu_control_t fpu_cw;
     _FPU_GETCW(fpu_cw);
     fpu_cw = (fpu_cw & ~_FPU_EXTENDED & ~_FPU_SINGLE) | _FPU_DOUBLE | _FPU_RC_NEAREST;
@@ -144,7 +144,7 @@ XRCORE_API void m64()
     _controlfp(_PC_64, MCW_PC);
 #endif
     _controlfp(_RC_CHOP, MCW_RC);
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
     fpu_control_t fpu_cw;
     _FPU_GETCW(fpu_cw);
     fpu_cw = (fpu_cw & ~_FPU_DOUBLE & ~_FPU_SINGLE) | _FPU_EXTENDED;
@@ -159,7 +159,7 @@ XRCORE_API void m64r()
     _controlfp(_PC_64, MCW_PC);
 #endif
     _controlfp(_RC_NEAR, MCW_RC);
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
     fpu_control_t fpu_cw;
     _FPU_GETCW(fpu_cw);
     fpu_cw = (fpu_cw & ~_FPU_DOUBLE & ~_FPU_SINGLE) | _FPU_EXTENDED | _FPU_RC_NEAREST;
@@ -171,7 +171,7 @@ void initialize()
 {
 #if defined(WINDOWS)
     _clearfp();
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
     fpu_control_t fpu_cw;
     fpu_cw = _FPU_DEFAULT;
     _FPU_SETCW(fpu_cw);
@@ -185,7 +185,7 @@ void initialize()
 
 #if defined(WINDOWS)
     ::Random.seed(u32(CPU::GetCLK() % (1i64 << 32i64)));
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
     ::Random.seed(u32(CPU::GetCLK() % ((u64)0x1 << 32)));
 #endif
 }
@@ -225,7 +225,7 @@ XRCORE_API u32 GetCurrentCPU()
 
 bool g_initialize_cpu_called = false;
 
-#if defined(LINUX)
+#if defined(LINUX) || defined(APPLE)
 u32 cpufreq()
 {
     u32 cpuFreq = 0;

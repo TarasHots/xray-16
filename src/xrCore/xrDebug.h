@@ -6,7 +6,7 @@
 #include "../../../../../../usr/local/include/FreeImage.h"
 
 #include <string>
-#if defined(LINUX) || defined(APPLE)
+#ifndef WINDOWS
 #include <cstdio>
 #elif defined(WINDOWS)
 #pragma warning(push)

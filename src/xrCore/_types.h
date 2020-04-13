@@ -3,6 +3,7 @@
 #define TYPES_H
 #include <cstdint>
 #include <limits>
+#include <sys/syslimits.h>
 
 // Type defs
 using s8 = std::int8_t;

@@ -12,7 +12,7 @@
 #include <share.h>
 #endif
 
-#if defined(FREEBSD)
+#if defined(FREEBSD) || defined(APPLE)
 #define _sys_errlist sys_errlist
 #endif
 

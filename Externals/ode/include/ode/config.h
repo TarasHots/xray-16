@@ -23,7 +23,7 @@
 
 /* per-machine configuration */
 
-#ifdef LINUX
+#ifndef WINDOWS
 #include <stdint.h>
 #endif
 
@@ -58,8 +58,12 @@ extern "C" {
 
 #include <stdarg.h>
 
-#ifndef FREEBSD
+#ifdef WINDOWS
 #include <malloc.h>		// for alloca under windows
+#endif
+
+#ifndef WINDOWS
+#include <stdlib.h>
 #endif
 
 #include <string.h>

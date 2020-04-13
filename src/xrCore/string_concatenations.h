@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(LINUX) || defined(FREEBSD)
+#if defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 #define EXCEPTION_STACK_OVERFLOW ((DWORD) 0xC00000FD)
 #define EXCEPTION_EXECUTE_HANDLER 1
 #define EXCEPTION_CONTINUE_SEARCH 0

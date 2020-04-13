@@ -1,12 +1,12 @@
 #ifndef STREAM_READER_INLINE_H
 #define STREAM_READER_INLINE_H
-#if defined(LINUX) || defined(FREEBSD)
+#if defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 #include <sys/mman.h>
 #endif
 
 #if defined(WINDOWS)
 IC const HANDLE& CStreamReader::file_mapping_handle() const { return (m_file_mapping_handle); }
-#elif defined(LINUX) || defined(FREEBSD)
+#elif defined(LINUX) || defined(FREEBSD) || defined(APPLE)
 IC const int& CStreamReader::file_mapping_handle() const { return (m_file_mapping_handle); }
 #endif
 
